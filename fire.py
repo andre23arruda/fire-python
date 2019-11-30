@@ -74,11 +74,16 @@ class Ui_Dialog(object):
         self.wind_factor = 2
         self.fire = np.zeros([70, 100],dtype = 'uint8')
 
-        self.img_canvas = FigureCanvas(Figure())
+        self.figure = plt.figure()
+        self.figure.patch.set_facecolor('k')
+        self.img_canvas = FigureCanvas(self.figure)
         self.layout.addWidget(self.img_canvas)
         self.img_ax = self.img_canvas.figure.subplots()
+        plt.subplots_adjust(left = 0.01, bottom = 0.01, right = 0.99, top = 0.99)
+
         self.img_ax.imshow(self.fire, cmap = 'hot', vmin = 0, vmax = 36, aspect = 'auto')
         self.img_ax.axis('off')
+        self.img_ax.set_facecolor("black")
 
         self.timer = self.img_canvas.new_timer(100, [(self.createFire, (), {})])
 
