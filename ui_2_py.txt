@@ -1,0 +1,8 @@
+# Abrir o prompt de comando:
+
+cd C:\Users\alca0\Anaconda3\Scripts
+
+# copiar o ui feito salvo pelo qtdesigner e converter para .py
+pyuic5 -x "C:\Users\alca0\Documents\Python_Scripts\fire\fire_design.ui" -o C:\Users\alca0\Documents\Python_Scripts\fire\fire_design.py"
+
+# executar fire_design.py no vscode
