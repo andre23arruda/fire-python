@@ -22,7 +22,7 @@ class Ui_Dialog(object):
         self.comecar_button.setObjectName("comecar_button")
 
         self.fire_slider = QtWidgets.QSlider(Dialog)
-        self.fire_slider.setGeometry(QtCore.QRect(42, 20, 20, 571))
+        self.fire_slider.setGeometry(QtCore.QRect(42, 60, 20, 531))
         self.fire_slider.setMinimum(40)
         self.fire_slider.setMaximum(100)
         self.fire_slider.setPageStep(10)
@@ -52,7 +52,7 @@ class Ui_Dialog(object):
         self.parar_button.setGeometry(QtCore.QRect(610, 670, 151, 61))
         self.parar_button.setObjectName("parar_button")
         self.groupBox = QtWidgets.QGroupBox(Dialog)
-        self.groupBox.setGeometry(QtCore.QRect(820, 660, 120, 80))
+        self.groupBox.setGeometry(QtCore.QRect(820, 650, 120, 80))
         self.groupBox.setObjectName("groupBox")
         self.esquerda_button = QtWidgets.QRadioButton(self.groupBox)
         self.esquerda_button.setGeometry(QtCore.QRect(10, 20, 95, 20))
@@ -61,6 +61,14 @@ class Ui_Dialog(object):
         self.direita_button = QtWidgets.QRadioButton(self.groupBox)
         self.direita_button.setGeometry(QtCore.QRect(10, 50, 95, 20))
         self.direita_button.setObjectName("direita_button")
+
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(470, 600, 71, 16))
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setGeometry(QtCore.QRect(30, 20, 61, 31))
+        self.label_2.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.label_2.setObjectName("label_2")
 
         self.decay_factor = 1.5
         self.wind_factor = 2
@@ -80,11 +88,14 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Fire_Doom"))
-        self.comecar_button.setText(_translate("Dialog", "Começar"))
-        self.parar_button.setText(_translate("Dialog", "Parar"))
-        self.esquerda_button.setText(_translate("Dialog", "Esquerda"))
-        self.direita_button.setText(_translate("Dialog", "Direita"))
+        Dialog.setWindowTitle(_translate("Dialog", "Fire Doom"))
+        self.comecar_button.setText(_translate("Dialog", "Start"))
+        self.parar_button.setText(_translate("Dialog", "Stop"))
+        self.esquerda_button.setText(_translate("Dialog", "Left"))
+        self.direita_button.setText(_translate("Dialog", "Right"))
+        self.groupBox.setTitle(_translate("Dialog", "Wind side"))
+        self.label.setText(_translate("Dialog", "Wind force"))
+        self.label_2.setText(_translate("Dialog", "Fire Force"))
 
         self.fire_slider.valueChanged.connect(self.getFire)
         self.wind_slider.valueChanged.connect(self.getWind)
@@ -108,25 +119,25 @@ class Ui_Dialog(object):
         # print(self.wind_factor)
 
     def createFire(self):
-        heigth = 70
-        width = 100
-        self.fire[heigth-1, :] = 36    
+        HEIGHT = 70
+        WIDTH = 100
+        self.fire[HEIGHT-1, :] = 36    
 
-        for row in range(heigth - 1):
-            for col in range(width):
+        for row in range(HEIGHT - 1):
+            for col in range(WIDTH):
 
                 decay_factor = self.decay_factor
                 decay = np.int_(np.floor(np.random.rand() * decay_factor))
 
                 if self.direita_button.isChecked():
-                    col = width - 1 - col
-                    col_index = (col + decay)%100
+                    col = WIDTH - 1 - col
+                    col_index = (col + decay)%WIDTH
                     col2 = np.abs(col + 1 - np.random.randint(1, self.wind_factor))
                 else:
                     col_index = col - decay
-                    col2 = (col - 1 + np.random.randint(1, self.wind_factor))%100
+                    col2 = (col - 1 + np.random.randint(1, self.wind_factor))%WIDTH
 
-                self.fire[heigth - 2 - row, col_index] = np.clip(self.fire[heigth - 1 - row, col2] - decay , 0, 36)
+                self.fire[HEIGHT - 2 - row, col_index] = np.clip(self.fire[HEIGHT - 1 - row, col2] - decay , 0, 36)
 
         self.img_ax.clear()        
         self.img_ax.imshow(self.fire, cmap = 'hot', vmin = 0, vmax = 36, aspect = 'auto')
